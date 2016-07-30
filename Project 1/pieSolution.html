@@ -1,0 +1,90 @@
+<html>
+<head>
+	<title>Pie Chart</title>
+	<!--<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<style>
+		body{
+			background:#f4f4f4;
+			font-family: Arial;
+		}
+	</style>
+</head>
+<body>
+	<h1>Video Game Console Sales</h1>
+	<div id="chart"></div>
+	<script>
+		var width = 400;
+		var height = 400;
+		var radius = 200;
+		var colors = d3.scaleOrdinal(d3.schemeCategory20)
+
+		var pieData = [
+			{
+				console:'PS4',
+				purchases: 3000
+			},
+			{
+				console:'XBox One',
+				purchases: 4000
+			},
+			{
+				console:'PS3',
+				purchases: 1800
+			},
+			{
+				console:'XBox 360',
+				purchases: 1900
+			},
+			{
+				console:'Wii',
+				purchases: 1300
+			}
+		]
+
+		var pie = d3.pie()
+			.value(function(d){
+				return d.purchases
+			})
+
+		var arc = d3.arc()
+			.outerRadius(radius)
+
+		var chart = d3.select('#chart').append('svg')
+			.attr('width', width)
+			.attr('height', height)
+			.append('g')
+				.attr('transform', 'translate('+(width - radius)+','+(height - radius)+')')
+				.selectAll('path')
+				.data(pie(pieData))
+				.enter()
+				.append('g')
+					.attr('class', 'slice')
+
+		var slices = d3.selectAll('g.slice')
+			.append('path')
+			.attr('fill', function(d, i){
+			    console.log(d)
+				return colors(i)
+			})
+			
+// 			<path fill="#1f77b4" d="M1.2246467991473532e-14,-200A200,200 0 0,1 199.5717846477207,13.080625846028598L0,0Z"></path>
+// 			<path fill="#aec7e8" d="M1.2246467991473532e-14,-200A200,200,0,0,1,173.20508075688775,99.99999999999997LNaN,NaNZ"></path>
+			
+			.attr('d', arc)
+
+		var text = d3.selectAll('g.slice')
+			.append('text')
+			.text(function(d,i){
+				return d.data.console
+			})
+			.attr('text-anchor', 'middle')
+			.attr('fill', 'white')
+			.attr('transform', function(d){
+				d.innerRadius = 0;
+				d.outerRadius = radius;
+				return 'translate('+arc.centroid(d)+')'
+			})
+	</script>
+</body>
+</html>

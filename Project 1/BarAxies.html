@@ -1,0 +1,108 @@
+<html>
+<head>
+	<title>D3 Sandbox</title>
+	<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+
+    <style type="text/css">
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Bar Charts with Scales</h1>
+    <hr>
+	<div id="chart"></div>
+	<script>
+		var chartData = [10, 25, 20, 15, 60,23,14,54,12,44,33,76];
+        
+        
+		var margin = {
+			top:30,
+			right:30,
+			bottom:40,
+			left:50
+		}
+
+		var height = 400 - margin.top - margin.bottom;
+		var width = 1000 - margin.left - margin.right;
+        
+        //Set Y Scale
+        var yScale = d3.scaleLinear()
+            .domain([0,d3.max(chartData)])
+            .range([0, height])
+        
+        //Set X Scale
+        var xScale = d3.scaleBand()
+            .domain(d3.range(0,chartData.length))
+            .range([0, width])
+        
+		var chart = d3.select('#chart').append('svg')
+		.style('background', '#f4f4f4')
+			.attr('width', width + margin.right + margin.left)
+			.attr('height', height + margin.top + margin.bottom)
+			.append('g')
+			.attr('transform','translate('+margin.left+','+margin.top+')')
+			.selectAll('rect')
+			.data(chartData)
+			.enter().append('rect')
+				.style('fill', '#0000cc')
+				.attr('width', xScale.bandwidth())
+				.attr('height', function(d){
+					return yScale(d);
+				})
+				.attr('x', function(d, i){
+					return xScale(i);
+				})
+				.attr('y', function(d){
+					return height - yScale(d);
+				})
+			
+			
+		 //Set Vertical Scale
+        var vScale = d3.scaleLinear()
+            .domain([0,d3.max(chartData)])
+            .range([height, 0])
+        
+        //Set Horizontal Scale
+        var hScale = d3.scaleBand()
+            .domain(d3.range(0,chartData.length))
+            .range([0, width], 0.2)	
+            
+        //Verticle axis
+        var vAxis = d3.axisLeft()
+            .scale(vScale)
+            .ticks(5)
+            .tickPadding(5)
+            .tickSize(5)
+            
+        var vGuide = d3.select('svg')
+            .append('g')
+                vAxis(vGuide)
+                vGuide.attr('transform','translate('+margin.left+','+margin.right+')')
+                vGuide.selectAll('path')
+                    .style('fill', 'none')
+                    .style('stroke','black')
+                vGuide.selectAll('line')
+                    .style('stroke','black')
+        
+        //Hoizontal axis
+        var hAxis = d3.axisBottom()
+            .scale(hScale)
+            .tickValues(hScale.domain().filter(function(d, i){
+                return !(i % (chartData.length/chartData.length))
+            }))
+            
+        var hGuide = d3.select('svg')
+            .append('g')
+                hAxis(hGuide)
+                hGuide.attr('transform','translate('+margin.left+','+(height+margin.top)+')')
+                hGuide.selectAll('path')
+                    .style('fill', 'none')
+                    .style('stroke','black')
+                hGuide.selectAll('line')
+                    .style('stroke','black')    
+	</script>
+</body>
+</html>

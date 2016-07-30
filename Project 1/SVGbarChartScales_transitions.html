@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>D3 Sandbox #3</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+
+</head>
+
+<style type="text/css">
+    body {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <h1>EP over time</h1>
+    <hr>
+    <div id='chart'></div>
+
+    <script type="text/javascript">
+        // var chartData = [250,100,230,750,440,120,310,600,250,100,230,750,440,120,310,600];
+        
+        var dataCount = 50;
+        var dataMax = 500;
+        
+        var chartData = [];
+        for (var i=0;i<dataCount;i++){
+            chartData.push(Math.round(Math.random()*dataMax));
+        }
+        
+        var width = 1200;
+        var height = 500;
+        
+		// Set Tooltip
+		var tooltip = d3.select('body').append('div')
+			.style('position', 'absolute')
+			.style('background', 'white')
+			.style('opacity', '0')
+			.style('padding', '5px 15px')
+			.style('border', '1px #000 solid')
+			.style('border-radius', '5px')
+
+        
+        // var barWidth = 40;
+        // var barOffset = 5;
+        
+        //Set Y Scale
+        var y = d3.scaleLinear()
+            .domain([0,d3.max(chartData)])
+            .range([0, height])
+        
+        //Set X Scale
+        var x = d3.scaleBand()
+            .domain(d3.range(0,chartData.length))
+            .range([0, width])
+        
+        //Set color Scales
+        var colors = d3.scaleLinear()
+            .domain([0,chartData.length])
+            .range(['#6ba6d8','#1e405d'])
+        
+        //append a SVG onto chart Div
+        var chart = d3.select('#chart').append('svg')
+            .attr('width',width)
+            .attr('height',height)
+            .style('background','#f9f9f9')
+            .selectAll('rect')
+            .data(chartData)
+            //Append rectangles
+            .enter().append('rect')
+                .style('fill', function(d,i){
+                    return colors(i);
+                })
+                .attr('width',x.bandwidth())
+                //creates recangle each with a height from the array
+                .attr('height',function(d){
+                    return y(d);
+                })
+                .attr('x', function(d,i){
+                    return x(i);
+                })
+                .attr('y',function(d){
+                    return height-y(d);
+                });
+        
+        chart.on('click', function(d){
+            alert(d)
+        });
+        
+        chart.on('mouseover', function(d){
+            tooltip.transition()
+                .style('opacity', 1);
+			tooltip.html(d)
+				.style('left', (d3.event.pageX)+'px')
+				.style('top', (d3.event.pageY)+'px')
+            barColor = this.style.fill;
+            d3.select(this)
+                .style('opacity', 0.8)
+                .style('fill', '#1f9f3d')
+        });
+        chart.on('mouseout', function(){
+            tooltip.transition()
+                .style('opacity', 1);
+            d3.select(this)
+                .style('opacity', 1)
+                .style('fill', barColor)
+        });
+        
+    </script>
+</body>
+</html>

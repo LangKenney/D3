@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shape</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<!--<script src="https://d3js.org/d3-ease.v1.min.js"></script>-->
+
+</head>
+
+<style type="text/css">
+    body {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <h1>Shape</h1>
+    <hr>
+    <div id='shape'></div>
+
+    <script type="text/javascript">
+
+        var shape = d3.select('#shape').append('svg')
+            .attr('width', 500)
+            .attr('height', 500)
+            .style('background','#f4f4f4');
+        
+        repeat()
+        
+        function repeat(){    
+            shape.append('rect')
+                .attr('x',0)
+                .attr('y',0)
+                .attr('width', 200)
+                .attr('height', 200)
+                .style('fill','red')
+                //.transition().duration(1000).ease(d3.easeElastic.period(0.7))
+                .transition().duration(1000).ease(d3.easeElastic)
+                    .attr('x',300)
+                    .style('fill','blue')
+                .transition()    
+                    .attr('y',300)
+                    .style('fill','green')
+                .transition()    
+                    .attr('x',0)
+                    .style('fill','yellow')
+                .transition()    
+                    .attr('y',0)
+                    .style('fill','red')
+                // .transition()
+                //     .attr('width',500)
+                //     .attr('height',500)
+                // .transition()
+                //     .attr('width',200)
+                //     .attr('height',200)
+                    .remove()
+            .on('end', repeat)
+        }
+    </script>
+</body>
+</html>

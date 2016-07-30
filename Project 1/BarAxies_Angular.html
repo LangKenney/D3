@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app="myApp">
+    <head>
+        <title>Telemetry Viewer</title>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta charset="UTF-8">
+
+        <!-- load bootstrap and fontawesome via CDN -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+        <style>
+            html, body
+            {
+                text-align: center;
+                font-size: 1.2em;
+            }
+        </style>
+
+        <!-- load angular via CDN -->
+        <script src="https://code.angularjs.org/1.5.0-rc.2/angular.min.js"></script>
+        <script src="https://code.angularjs.org/1.5.0-rc.2/angular-messages.min.js"></script>
+        <script src="https://code.angularjs.org/1.5.0-rc.2/angular-resource.min.js"></script>
+
+
+        <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+        <script src="app.js"></script>
+        
+    </head>
+
+    <body ng-controller='mainController'>
+        <div>
+        <h1>Telemetry Viewer</h1>
+        <hr>
+        <div>
+            <div>
+                <div>
+                    <a>Temp: {{added}}</a>
+                    <!--<input type="number" ng-model="added">-->
+                    <button type="submit" class='btn btn-success btn-large' ng-click="start()">Start</button>
+                    <!--<button type="submit" ng-click="remove()">Clear</button>-->
+                </div>
+                
+                <p>{{chartData}}</p>
+            </div>
+        </div>
+        
+        <div id="chart"></div>
+        
+
+    </body>
+</html>

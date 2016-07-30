@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app='D3App'>
+    <head>
+        <!-- META -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+        <title>D3</title>
+        <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <!--<script src="js/d3.min.js"></script>-->
+    </head>
+        
+    <body>
+        <h1>Wellcome</h1>
+        <p>This is a paragraph</p>
+        <ul id="items">
+            <li class="item">This is an item</li>
+            <li class="item">This is an item</li>
+            <li class="item">This is an item</li>
+            <li class="item">This is an item</li>
+            <!--<li class="item">This is an item</li>-->
+            <!--<li class="item">This is an item</li>-->
+            <!--<li class="item">This is an item</li>-->
+            <!--<li class="item">This is an item</li>-->
+            <!--<li class="item">This is an item</li>-->
+            <!--<li class="item">This is an item</li>-->
+            <!--<li class="item">This is an item</li>-->
+            <!--<li class="item">This is an item</li>-->
+        </ul>
+        
+        <script>
+            //---Selecting elements---
+            d3.select('h1')
+                // .text('Selected')
+                .style('color','red');
+            d3.selectAll("p").style("color", "blue");
+            d3.selectAll('.item').style('color','red');
+            d3.selectAll('.item:nth-child(2n)')
+                .text('List Item')
+                .style('color','green');
+            //d3.select('h1').text('Selected')
+            
+            d3.select('#items')
+                .insert('li')
+                .classed('item',true)
+                .html('This is a new item')
+            
+            d3.select('.item:nth-child(3n)').remove();
+            
+            // d3.select('h1').attr()
+            
+            //---Data Binding---
+            var numbers = [1,2,3,4,5,6,7];
+            
+            //--Changing to numbers
+            // d3.selectAll('.item')
+            //     .data(numbers)
+            //     .text(function(d){
+            //         return "I am number "+d;
+            //     });
+            
+            //--Changing the style of each
+            // d3.selectAll('.item')
+            //     .data(numbers)
+            //     .style('font-size', function(d){
+            //         return d*10+'px';
+            // });
+            
+            //--Adding if li is shorter than numbers--
+            var li = d3.select('body').selectAll('li')
+                .data(numbers)
+                
+                .text(function(d){
+                    return "I am number "+d;
+            });
+            
+            li.enter().append('li')
+                .text(function(d){
+                    return "I am number "+d;
+                });
+                
+            li.exit().remove();
+        </script>
+        
+    </body>
+</html>

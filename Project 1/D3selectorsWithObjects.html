@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>D3 Sandbox #2</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
+
+</head>
+<body>
+	<h1>Top Exercise Methods</h1>
+	<ul id="items">
+		<li class="item">Running</li>
+		<li class="item">Elliptical</li>
+		<li class="item">Bike</li>
+		<li class="item">Weights</li>
+		<li class="item">Machines</li>
+	</ul>
+
+	<script>
+        var styles = [
+                {
+                    'background':'red',
+                    'color':'white',
+                    'width':25
+                },
+                            {
+                    'background':'blue',
+                    'color':'white',
+                    'width':25
+                },
+                            {
+                    'background':'green',
+                    'color':'white',
+                    'width':10
+                },
+                            {
+                    'background':'yellow',
+                    'color':'black',
+                    'width':30
+                },
+                            {
+                    'background':'grey',
+                    'color':'white',
+                    'width':10
+                }
+            ];
+        
+            d3.selectAll('.item')
+    			.data(styles)
+    			.styles({
+                    'font-size':'18px',
+                    'padding':'5px',
+                    'margin':'4px',
+                    'list-style':'none',
+                    'background': function(d){
+                        return d.background;
+                    },
+                    'color': function(d){
+                        return d.color;
+                    },
+                    'width': function(d){
+                        return d.color
+                    },
+                    'width': function(d){
+                        return d.width+'%'
+                    }
+    			})
+            
+            // .style('background', function(d){
+            //     return d;
+            // })
+        
+	</script>
+</body>
+</html>

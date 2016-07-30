@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <meta charset="utf-8">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+                <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <style type="text/css">
+            body {
+                text-align: center;
+            }
+            #line{
+                width: 1400px;
+                height: 700px;
+                background: white;
+                margin: auto
+            }
+            button {
+                margin: 20px 0 0 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Data:</h1>
+         <input type='file' name='userFile'>
+        <div id="line"></div>
+
+        
+    </body>
+    
+    <script type="text/javascript">
+            var w = 1400;
+            var h = 700;
+            
+            var x = d3.scale.linear()
+                    .range([0, w]);
+
+            var y = d3.scale.linear()
+                    .range([h, 0]);
+            
+            var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient("bottom");
+
+            var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left");
+                    
+            var line = d3.svg.line()
+                    .x(function (d) {
+                        return x(d.date);
+                    })
+                    .y(function (d) {
+                        return y(d.close);
+                    });
+                    
+            var svg = d3.select("#line")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h)
+                    .attr("id", "visualization")
+                    .attr("xmlns", "http://www.w3.org/2000/svg");
+
+            			// create yAxis
+                svg.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + h + ")")
+                        .call(xAxis);
+
+                svg.append("g")
+                        .attr("class", "y axis")
+                        .call(yAxis)
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text("Temp (Deg F)");
+			      
+            //var data = d3.range(11).map(function(){return Math.random()*10})
+            var data = d3.csv("FakeData.csv", function (csvdata) {
+                // data.forEach(function(d) {
+                //     blank.push(Number(data[i].data))
+                // });
+                //console.log(data)
+                var blank = [];
+                for (var i = 0; i < csvdata.length; i++) {
+                    //console.log(data[i].data);
+                    blank.push(Number(csvdata[i].data))
+                }
+                console.log(blank)
+                data = blank;
+                //return d
+                //             // if (error)
+                //             //     throw error;
+
+                //             // x.domain(d3.extent(data, function (d) {
+                //             //     return d.x;
+                //             // }))
+                //             // y.domain(d3.extent(data, function (d) {
+                //             //     return d.y;
+                //             // }))
+
+                console.log("here")
+
+                console.log(Math.max.apply(Math, data))
+                console.log(Math.min.apply(Math, data))
+                console.log(data)
+                console.log("here")
+                
+                var x = d3.scale.linear().domain([0, data.length]).range([0, 1400]);
+                var y = d3.scale.linear().domain([Math.min.apply(Math, data), Math.max.apply(Math, data)]).range([0, 700]);
+                var line = d3.svg.line()
+                        .interpolate("cardinal")
+                        .x(function (d, i) {
+                            return x(i);
+                        })
+                        .y(function (d) {
+                            return y(d);
+                        })
+
+                var path = svg.append("path")
+                        .attr("d", line(data))
+                        .attr("stroke", "steelblue")
+                        .attr("stroke-width", "2")
+                        .attr("fill", "none");
+            
+                var totalLength = path.node().getTotalLength();
+
+                path
+                        .attr("stroke-dasharray", totalLength + " " + totalLength)
+                        .attr("stroke-dashoffset", totalLength)
+                        .transition()
+                        .duration(7000)
+                        .ease("linear")
+                        .attr("stroke-dashoffset", 0);
+
+                svg.on("click", function () {
+                    path
+                            .transition()
+                            .duration(7000)
+                            .ease("linear")
+                            .attr("stroke-dashoffset", totalLength);
+                })
+
+            })
+
+        </script>
+</html>
